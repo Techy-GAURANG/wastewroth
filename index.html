@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1a7a4a" />
+  <meta name="description" content="WasteWorth – AI-Powered Waste Reuse Application" />
+  <title>WasteWorth ♻</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.svg" />
+  <link rel="apple-touch-icon" href="icons/icon-192.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+<!-- ── SPLASH SCREEN ─────────────────────────────────── -->
+<div id="splash" class="splash">
+  <div class="splash-inner">
+    <div class="splash-logo">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="38" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+        <path d="M40 18 C34 18 29 22 27 28 L22 38 L30 38 L22 52 L38 52 L38 60 L42 60 L42 52 L58 52 L50 38 L58 38 L53 28 C51 22 46 18 40 18Z" fill="white" opacity="0.9"/>
+        <path d="M33 35 L27 46 L53 46 L47 35Z" fill="#1a7a4a"/>
+        <circle cx="40" cy="28" r="5" fill="white" opacity="0.7"/>
+      </svg>
+    </div>
+    <h1 class="splash-title">WasteWorth</h1>
+    <p class="splash-sub">AI-Powered Waste Reuse</p>
+    <div class="splash-loader">
+      <div class="splash-bar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── AUTH SCREENS ──────────────────────────────────── -->
+<div id="auth-screen" class="screen hidden">
+  <!-- Login -->
+  <div id="login-view" class="auth-view">
+    <div class="auth-bg-art"></div>
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo-icon-sm">♻</div>
+        <span>WasteWorth</span>
+      </div>
+      <h2 class="auth-heading">Welcome back</h2>
+      <p class="auth-sub">Sign in to continue your eco journey</p>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+          <button class="pw-toggle" onclick="togglePw('login-password',this)">👁</button>
+        </div>
+      </div>
+      <div id="login-error" class="form-error hidden"></div>
+      <button class="btn-primary" onclick="doLogin()">Log In</button>
+      <p class="auth-switch">Don't have an account? <a onclick="showView('register-view')">Register</a></p>
+    </div>
+  </div>
+
+  <!-- Register -->
+  <div id="register-view" class="auth-view hidden">
+    <div class="auth-bg-art"></div>
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo-icon-sm">♻</div>
+        <span>WasteWorth</span>
+      </div>
+      <h2 class="auth-heading">Create Account</h2>
+      <p class="auth-sub">Join the circular economy movement</p>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="reg-name" placeholder="Your name" autocomplete="name" />
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label>Password <span class="hint">(min 8 chars)</span></label>
+        <div class="pw-wrap">
+          <input type="password" id="reg-password" placeholder="Create password" autocomplete="new-password" />
+          <button class="pw-toggle" onclick="togglePw('reg-password',this)">👁</button>
+        </div>
+      </div>
+      <div id="reg-error" class="form-error hidden"></div>
+      <button class="btn-primary" onclick="doRegister()">Create Account</button>
+      <p class="auth-switch">Already have an account? <a onclick="showView('login-view')">Sign In</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN APP ───────────────────────────────────────── -->
+<div id="app" class="screen hidden">
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <span class="logo-leaf">♻</span>
+      <span class="logo-text">WasteWorth</span>
+    </div>
+    <div class="topbar-actions">
+      <div id="user-badge" class="user-badge"></div>
+      <button class="icon-btn" onclick="logout()" title="Logout">⏻</button>
+    </div>
+  </header>
+
+  <!-- Page Container -->
+  <main class="page-container">
+
+    <!-- ── HOME PAGE ── -->
+    <section id="page-home" class="page active">
+      <div class="hero-banner">
+        <div class="hero-text">
+          <h2>Scan & Reuse</h2>
+          <p>Point your camera at any waste item and get instant AI-powered reuse ideas.</p>
+        </div>
+        <div class="hero-icon">♻</div>
+      </div>
+
+      <div class="scan-options">
+        <button class="scan-btn camera-btn" onclick="openCamera()">
+          <span class="scan-icon">📷</span>
+          <span>Camera</span>
+        </button>
+        <button class="scan-btn gallery-btn" onclick="document.getElementById('gallery-input').click()">
+          <span class="scan-icon">🖼</span>
+          <span>Gallery</span>
+        </button>
+        <input type="file" id="gallery-input" accept="image/*" class="hidden" onchange="handleGalleryUpload(event)" />
+      </div>
+
+      <!-- Camera Preview -->
+      <div id="camera-container" class="camera-container hidden">
+        <video id="camera-feed" autoplay playsinline></video>
+        <div class="camera-overlay">
+          <div class="camera-frame"></div>
+        </div>
+        <div class="camera-controls">
+          <button class="cam-btn capture-btn" onclick="capturePhoto()">📸</button>
+          <button class="cam-btn close-btn" onclick="closeCamera()">✕</button>
+        </div>
+        <canvas id="snap-canvas" class="hidden"></canvas>
+      </div>
+
+      <!-- Result Panel -->
+      <div id="result-panel" class="result-panel hidden">
+        <div class="result-header">
+          <div id="result-img-wrap" class="result-img-wrap">
+            <img id="result-img" src="" alt="Scanned waste" />
+          </div>
+          <div class="result-info">
+            <div class="result-badge" id="result-badge">Plastic Bottle</div>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-bar" id="confidence-bar"></div>
+            </div>
+            <p class="confidence-text" id="confidence-text">92% confidence</p>
+          </div>
+        </div>
+        <div id="suggestions-list" class="suggestions-list"></div>
+      </div>
+
+      <!-- Material Categories Grid -->
+      <div class="section-title">Browse by Material</div>
+      <div class="categories-grid" id="categories-grid"></div>
+    </section>
+
+    <!-- ── FAVOURITES PAGE ── -->
+    <section id="page-favourites" class="page">
+      <div class="page-header">
+        <h2>My Favourites</h2>
+        <span class="page-sub">Saved reuse ideas</span>
+      </div>
+      <div id="fav-list" class="fav-list"></div>
+    </section>
+
+    <!-- ── ANALYTICS PAGE ── -->
+    <section id="page-analytics" class="page">
+      <div class="page-header">
+        <h2>Impact Analytics</h2>
+        <span class="page-sub">Your sustainability footprint</span>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num" id="stat-scans">0</div>
+          <div class="stat-label">Items Scanned</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-saved">0</div>
+          <div class="stat-label">Ideas Saved</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-points">0</div>
+          <div class="stat-label">Eco Points</div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Scan History</h3>
+        <canvas id="scan-chart" width="600" height="220"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Material Distribution</h3>
+        <canvas id="material-chart" width="600" height="220"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Weekly Activity</h3>
+        <canvas id="activity-chart" width="600" height="200"></canvas>
+      </div>
+    </section>
+
+    <!-- ── SETTINGS PAGE ── -->
+    <section id="page-settings" class="page">
+      <div class="page-header">
+        <h2>Settings</h2>
+        <span class="page-sub">Configure your experience</span>
+      </div>
+
+      <div class="settings-section">
+        <h3 class="settings-group-title">🤖 AI Configuration</h3>
+        <div class="api-key-card">
+          <div class="api-key-header">
+            <div>
+              <div class="api-key-title">Anthropic API Key</div>
+              <div class="api-key-sub">Powers AI waste classification & smart suggestions</div>
+            </div>
+            <div class="api-status" id="api-status-dot">●</div>
+          </div>
+          <div class="form-group">
+            <label>API Key</label>
+            <div class="pw-wrap">
+              <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." />
+              <button class="pw-toggle" onclick="togglePw('api-key-input',this)">👁</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Model</label>
+            <select id="api-model-select" class="select-input">
+              <option value="claude-sonnet-4-20250514">Claude Sonnet 4 (Recommended)</option>
+              <option value="claude-opus-4-20250514">Claude Opus 4 (More powerful)</option>
+              <option value="claude-haiku-4-5-20251001">Claude Haiku (Faster)</option>
+            </select>
+          </div>
+          <div class="api-actions">
+            <button class="btn-outline" onclick="testApiKey()">Test Connection</button>
+            <button class="btn-primary btn-sm" onclick="saveApiKey()">Save Key</button>
+          </div>
+          <div id="api-test-result" class="api-test-result hidden"></div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3 class="settings-group-title">👤 Profile</h3>
+        <div class="settings-card">
+          <div class="profile-row">
+            <div class="profile-avatar" id="profile-avatar"></div>
+            <div>
+              <div class="profile-name" id="profile-name-display"></div>
+              <div class="profile-email" id="profile-email-display"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3 class="settings-group-title">🎨 Appearance</h3>
+        <div class="settings-card">
+          <div class="toggle-row">
+            <span>Dark Mode</span>
+            <label class="toggle">
+              <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode(this)" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>Notifications</span>
+            <label class="toggle">
+              <input type="checkbox" id="notif-toggle" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3 class="settings-group-title">📊 Data</h3>
+        <div class="settings-card">
+          <button class="btn-outline danger" onclick="clearAllData()">Clear All Data</button>
+          <p class="hint-text">This will erase all your scan history and favourites.</p>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3 class="settings-group-title">ℹ About</h3>
+        <div class="settings-card about-card">
+          <p><strong>WasteWorth v1.0</strong></p>
+          <p>B.Tech Final Year Project – Computer Science & Engineering</p>
+          <p>AI-Powered Waste Reuse Application</p>
+          <p class="hint-text">Powered by TensorFlow Lite · SQLite · Claude AI</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="navTo('home')" data-page="home">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="nav-btn" onclick="navTo('favourites')" data-page="favourites">
+      <span class="nav-icon">♥</span>
+      <span class="nav-label">Favourites</span>
+    </button>
+    <button class="nav-btn" onclick="navTo('analytics')" data-page="analytics">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Analytics</span>
+    </button>
+    <button class="nav-btn" onclick="navTo('settings')" data-page="settings">
+      <span class="nav-icon">⚙</span>
+      <span class="nav-label">Settings</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ── SUGGESTION DETAIL MODAL ──────────────────────── -->
+<div id="suggestion-modal" class="modal-overlay hidden" onclick="closeModal(event)">
+  <div class="modal-card">
+    <div class="modal-img-wrap">
+      <div class="modal-img-placeholder" id="modal-img"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-badges">
+        <span class="difficulty-badge" id="modal-difficulty"></span>
+        <span class="time-badge" id="modal-time">⏱ 30 mins</span>
+      </div>
+      <h2 id="modal-title"></h2>
+      <div class="modal-tools" id="modal-tools"></div>
+      <h4 class="steps-heading">Steps to Follow</h4>
+      <ol id="modal-steps" class="steps-list"></ol>
+      <div class="modal-actions">
+        <button class="btn-fav" id="modal-fav-btn" onclick="toggleFavFromModal()">♥ Save</button>
+        <button class="btn-rate" onclick="openRating()">★ Rate</button>
+        <button class="btn-share" onclick="shareIdea()">↑ Share</button>
+      </div>
+      <div id="rating-section" class="rating-section hidden">
+        <h4>Rate this idea</h4>
+        <div class="star-rating" id="star-rating">
+          <span onclick="setRating(1)">★</span>
+          <span onclick="setRating(2)">★</span>
+          <span onclick="setRating(3)">★</span>
+          <span onclick="setRating(4)">★</span>
+          <span onclick="setRating(5)">★</span>
+        </div>
+        <textarea id="rating-comment" placeholder="Add a comment (optional)" rows="2"></textarea>
+        <button class="btn-primary btn-sm" onclick="submitRating()">Submit</button>
+      </div>
+    </div>
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+  </div>
+</div>
+
+<!-- ── TOAST ─────────────────────────────────────────── -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/data.js"></script>
+<script src="js/camera.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

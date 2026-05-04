@@ -1,0 +1,25 @@
+{
+  "name": "WasteWorth – AI Waste Reuse",
+  "short_name": "WasteWorth",
+  "description": "AI-powered waste reuse suggestions. Scan, classify, and upcycle household waste.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f8f5",
+  "theme_color": "#1a7a4a",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "icons/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "icons/icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "categories": ["lifestyle", "education", "utilities"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Scan Waste",
+      "short_name": "Scan",
+      "description": "Open camera to scan a waste item",
+      "url": "./?action=scan",
+      "icons": [{ "src": "icons/icon-192.svg", "sizes": "192x192" }]
+    }
+  ]
+}
